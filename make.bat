@@ -4,13 +4,17 @@ SETLOCAL
 CALL :NORMALIZEPATH "."
 SET ROOT_DIR=%RETVAL%
 
-set "DIRNAME=build-cross-linux"
+if "%1"=="x64" (
+  set CFG=amd64
+)
+if "%1"=="x86" (
+  set CFG=amd64_x86
+)
 
+set "DIRNAME=buildDir"
 set "FLAGS=-GNinja"
 
-echo Using Clang-based Linux x86_64 Toolchain
-set TOOLCHAIN_PATH="%ROOT_DIR%\cmake\CrossLinuxX64Toolchain.cmake"
-set "FLAGS=%FLAGS% -DCMAKE_TOOLCHAIN_FILE=%TOOLCHAIN_PATH%"
+CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" %CFG%
 
 if not exist %DIRNAME% mkdir %DIRNAME%
 cd %DIRNAME%
